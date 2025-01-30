@@ -1,0 +1,11 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C#: TimeSheetAPI [Default Configuration]",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}\\TimeSheetAPI\\TimeSheetAPI.csproj"
+    }
+  ]
+}
