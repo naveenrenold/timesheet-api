@@ -1,7 +1,8 @@
+namespace  TimeSheet.Helper
+{    
 using System;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-
 public class DatabaseHelper
 {
     private readonly string _connectionString;
@@ -40,4 +41,5 @@ public class DatabaseHelper
             }
         }
     }
+}
 }

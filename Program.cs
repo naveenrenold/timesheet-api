@@ -1,3 +1,5 @@
+using TimeSheet.Helper;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSwaggerGen();
 // Add services to the container.
