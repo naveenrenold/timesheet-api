@@ -8,8 +8,20 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddSingleton<EmployeeDL>();
-var app = builder.Build();
+builder.Services.AddSingleton<DatabaseHelper>(); 
+builder.Services.AddScoped<EmployeeDL>(); 
+// Enable CORS policy
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowReactApp",           
+                 policy => policy.WithOrigins("http://localhost:5173") // Replace with the URL of your React app
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+        });
 
+var app = builder.Build();
+//Configure the HTTP request pipeline.
+ app.UseCors("AllowReactApp");  // Apply the CORS policy
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
