@@ -40,7 +40,10 @@ namespace TimeSheet.Controller
         var employee = _employeeDL.ValidateEmployee(loginRequest.EmployeeId!, loginRequest.Password!);
         if (employee != null)
         {
-            return Ok(new { name = employee.Name });
+            return Ok(new {  name = employee.Name,
+                employeeId = employee.EmployeeId,
+                totalWFH = employee.TotalWFH,
+                totalLeaves = employee.TotalLeaves});
         }
         return Unauthorized(new { message = "Invalid credentials" });
     }
