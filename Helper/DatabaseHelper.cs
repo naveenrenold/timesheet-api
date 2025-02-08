@@ -14,7 +14,8 @@ public class DatabaseHelper
         //     .Build();
 
        // _connectionString = "Server=tcp:time-sheet.database.windows.net,1433;Initial Catalog=main;Persist Security Info=False;User ID=naveenrenold;Password=CHRisty1002@#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-       _connectionString = "Server=tcp:sqlcmd -S time-sheet.database.windows.net -d main -Gt,1433;Initial Catalog=main;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=\"Active Directory Default\";";
+      // _connectionString = "Server=tcp:time-sheet.database.windows.net 1433 -d main -Gt,1433;Initial Catalog=main;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=\"Active Directory Default\";";
+      _connectionString = "Server=tcp:time-sheet.database.windows.net,1433;Initial Catalog=main;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication=\"Active Directory Default\";";
     }
 
     public void TestConnection()
