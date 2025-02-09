@@ -10,11 +10,13 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<EmployeeDL>();
 builder.Services.AddSingleton<DatabaseHelper>(); 
 builder.Services.AddScoped<EmployeeDL>(); 
+builder.Services.AddSingleton<AttendanceDL>();
+builder.Services.AddScoped<AttendanceDL>(); 
 // Enable CORS policy
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("AllowReactApp",           
-                 policy => policy.WithOrigins("http://localhost:5173") // Replace with the URL of your React app
+                 policy => policy.WithOrigins("http://localhost:5174") 
                     .AllowAnyHeader()
                     .AllowAnyMethod());
         });
