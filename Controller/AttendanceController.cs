@@ -25,15 +25,10 @@ namespace TimeSheet.Controllers
                 {
                     return BadRequest(new { message = "Invalid attendance data." });
                 }
+                employeeAttendance.StatusId ??= 1;                
+                var attendance = _attendanceDL.AddEmployeeAttendance(employeeAttendance);
 
-                // Call AddEmployeeAttendance in Data Layer with DateOnly
-                var attendance = _attendanceDL.AddEmployeeAttendance(
-                    employeeAttendance.AttendanceDate,  // DateOnly here
-                    employeeAttendance.EmployeeId, 
-                    employeeAttendance.StatusId ?? 1 // Default to 1 if StatusId is null
-                );
-
-                if (attendance != null)
+                if (attendance)
                     return Ok(new { message = "Attendance added successfully.", attendance });
 
                return BadRequest(new { message = "Failed to add attendance." });

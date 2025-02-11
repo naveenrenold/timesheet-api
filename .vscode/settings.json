@@ -1,3 +1,4 @@
 {
-  "dotnet.defaultSolution": "TimeSheetAPI.sln"
+  "dotnet.defaultSolution": "TimeSheetAPI.sln",
+  "sarif-viewer.connectToGithubCodeScanning": "off"
 }

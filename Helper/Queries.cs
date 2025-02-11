@@ -18,10 +18,7 @@ namespace TimeSheet.Helper
         // Query to add attendance
         public static string AddEmployeeAttendance = @"
     INSERT INTO EmployeeAttendance (AttendanceDate, EmployeeID, StatusId)
-    VALUES (@AttendanceDate, @EmployeeID, @StatusId);
-
-    SELECT AttendanceDate, EmployeeID, StatusId FROM EmployeeAttendance
-    WHERE AttendanceDate = @AttendanceDate AND EmployeeID = @EmployeeID;";
+    VALUES (@AttendanceDate, @EmployeeID, @StatusId);";
 
 
         
