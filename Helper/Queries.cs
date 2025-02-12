@@ -4,7 +4,7 @@ namespace TimeSheet.Helper
     {
         // SQL query to validate employee and fetch additional details
           public static string ValidateEmployeeQuery = @"
-            SELECT e.EmployeeId, e.Name, e.TotalWFH, e.TotalLeaves
+            SELECT e.EmployeeId, e.Name, e.TotalWFH, e.TotalLeaves,e.Specialization,e.Gender
             FROM EmployeeLogin el
             INNER JOIN Employee e ON el.EmployeeId = e.EmployeeId
             WHERE el.EmployeeId = @EmployeeId

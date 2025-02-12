@@ -43,7 +43,9 @@ namespace TimeSheet.Controller
             return Ok(new {  name = employee.Name,
                 employeeId = employee.EmployeeId,
                 totalWFH = employee.TotalWFH,
-                totalLeaves = employee.TotalLeaves});
+                totalLeaves = employee.TotalLeaves,
+                specialization = employee.Specialization,
+                gender = employee.Gender});
         }
         return Unauthorized(new { message = "Invalid credentials" });
     }
