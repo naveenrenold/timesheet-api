@@ -1,7 +1,7 @@
 namespace TimeSheet.DataLayer
 {
+    using TimeSheet.Models;
     using TimeSheet.Helper; // Import the Query class
-    using TimeSheet.Models; 
     using Microsoft.Data.SqlClient;
     using Dapper;
 
@@ -14,38 +14,71 @@ namespace TimeSheet.DataLayer
             _databaseHelper = databaseHelper;
         }
 
-        // Change return type to Employee? to allow for null when no employee is found
         public Employee? ValidateEmployee(string employeeId, string password)
         {
-            string connectionString = _databaseHelper.GetConnectionString(); // Get the connection string from DatabaseHelper
-            
+            string connectionString = _databaseHelper.GetConnectionString();
             using (var connection = new SqlConnection(connectionString))
             {
-                connection.Open();                
-                var result = connection.QueryFirstOrDefault<Employee>(Query.ValidateEmployeeQuery, new {EmployeeId = employeeId, Password = password });
+                connection.Open();
+                var result = connection.QueryFirstOrDefault<Employee>(Query.ValidateEmployeeQuery, new { EmployeeId = employeeId, Password = password });
                 return result;
-                // using (var command = new SqlCommand(Query.ValidateEmployeeQuery, connection)) // Use the query from Query.cs
-                // {
-                //     command.Parameters.AddWithValue("@EmployeeId", employeeId);
-                //     command.Parameters.AddWithValue("@Password", password);
-
-                //     using (var reader = command.ExecuteReader())
-                //     {
-                //         if (reader.Read())
-                //         {
-                //             return new Employee
-                //             {
-                //                 EmployeeId = reader.GetInt32(0),
-                //                 Name = reader.IsDBNull(1) ? "Unknown" : reader.GetString(1), // Default to "Unknown" if Name is null
-                //                 TotalWFH = reader.GetInt32(2),
-                //                 TotalLeaves = reader.GetInt32(3)
-                //             };
-                //         }
-                //     }
-                // }
             }
-
-           // return null; // Return null if no matching employee found
         }
+
+        // Method to update employee WFH or leave balance based on attendance status
+        public bool UpdateEmployeeBalance(string employeeId, int statusId)
+        {
+            string connectionString = _databaseHelper.GetConnectionString();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                
+                // Start transaction
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        // Update WFH balance if status is WFH (2)
+                        if (statusId == 2)
+                        {
+                            int rowsAffected = connection.Execute(Query.UpdateWfhBalance, new { EmployeeId = employeeId }, transaction);
+                            if (rowsAffected == 0) return false; // No WFH balance left to reduce
+                        }
+                        // Update Leave balance if status is Leave (3)
+                        else if (statusId == 3)
+                        {
+                            int rowsAffected = connection.Execute(Query.UpdateLeaveBalance, new { EmployeeId = employeeId }, transaction);
+                            if (rowsAffected == 0) return false; // No leave balance left to reduce
+                        }
+
+                        // Commit transaction
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        // Rollback transaction in case of error
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public Employee? GetEmployeeById(string employeeId)
+       {
+             string connectionString = _databaseHelper.GetConnectionString();
+             using (var connection = new SqlConnection(connectionString))
+          {
+             return connection.QueryFirstOrDefault<Employee>( Query.GetEmployeeById,  new { EmployeeId = employeeId });
+          }
+           
+        }
+
+  
+
+
+
+    
     }
 }

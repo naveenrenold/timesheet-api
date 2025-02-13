@@ -10,10 +10,7 @@ namespace TimeSheet.Controller
    [Route("api/employee")]
    [ApiController]
     public class EmployeeController : ControllerBase
-    //1.Query https://localhost:422272/validateemployee?employeid=101
-    {        //2.Route [Route("validateemployee/{employeeId}")]  https://localhost:422272/validateemployee/101
-             //3. Body (only for POST method). use [Frombody]
-        //readonly EmployeeDL employeeDL = new();
+    {
         private readonly EmployeeDL _employeeDL;
 
         // Constructor injection
@@ -21,38 +18,76 @@ namespace TimeSheet.Controller
         {
             _employeeDL = employeeDL;
         }
-        // [HttpGet]
-        // [Route("validateemployee/{employeeId}")]
-        // public IActionResult ValidateEmployee(string employeeId)
-        // {
-        //     if (string.IsNullOrEmpty(employeeId))
-        //     {
-        //         return BadRequest("Employee ID is required.");
-        //     }
-        //      bool isValid = _employeeDL.ValidateEmployee(employeeId);
-        //     return Ok(isValid);            
-        // }
+
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest loginRequest)
         {
-           try
-    {
-        var employee = _employeeDL.ValidateEmployee(loginRequest.EmployeeId!, loginRequest.Password!);
-        if (employee != null)
-        {
-            return Ok(new {  name = employee.Name,
-                employeeId = employee.EmployeeId,
-                totalWFH = employee.TotalWFH,
-                totalLeaves = employee.TotalLeaves,
-                specialization = employee.Specialization,
-                gender = employee.Gender});
+            try
+            {
+                var employee = _employeeDL.ValidateEmployee(loginRequest.EmployeeId!, loginRequest.Password!);
+                if (employee != null)
+                {
+                    return Ok(new {  
+                        name = employee.Name,
+                        employeeId = employee.EmployeeId,
+                        totalWFH = employee.TotalWFH,
+                        totalLeaves = employee.TotalLeaves,
+                        specialization = employee.Specialization,
+                        gender = employee.Gender
+                    });
+                }
+                return Unauthorized(new { message = "Invalid credentials" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
         }
-        return Unauthorized(new { message = "Invalid credentials" });
-    }
-    catch (Exception ex)
+
+        // New endpoint to update employee WFH and Leave balances
+        [HttpPost("updateattendance")]
+        public IActionResult UpdateAttendance([FromBody] AttendanceUpdateRequest attendanceUpdateRequest)
+        {
+            try
+            {
+                if (attendanceUpdateRequest == null || string.IsNullOrEmpty(attendanceUpdateRequest.EmployeeId))
+                {
+                    return BadRequest(new { message = "Invalid data provided." });
+                }
+
+                var success = _employeeDL.UpdateEmployeeBalance(attendanceUpdateRequest.EmployeeId, attendanceUpdateRequest.StatusId);
+                // var employee = _employeeDL.GetEmployeeDetails(attendanceUpdateRequest.EmployeeId);
+                if (success)
+                {
+                    return Ok(new{  name = attendanceUpdateRequest.Name,
+                employeeId = attendanceUpdateRequest.EmployeeId,
+                gender = attendanceUpdateRequest.Gender,   // Keep gender
+                specialization = attendanceUpdateRequest.Specialization,   // Keep specialization
+                totalWFH = attendanceUpdateRequest.TotalWFH,
+                totalLeaves = attendanceUpdateRequest.TotalLeaves}
+                  
+
+             );
+                }
+
+                return BadRequest(new { message = "Failed to update attendance. Check if balances are available." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
+        [HttpGet("getEmployee/{employeeId}")]
+public IActionResult GetEmployee(string employeeId)
+{
+    var employee = _employeeDL.GetEmployeeById(employeeId);
+    if (employee != null)
     {
-        return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+        return Ok(employee);
     }
+    return NotFound(new { message = "Employee not found" });
+}
+
     }
- 
-} }
+}
