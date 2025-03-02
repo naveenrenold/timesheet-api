@@ -1,17 +1,17 @@
-namespace TimeSheet.DataLayer
+using Microsoft.Data.SqlClient;
+using Dapper;
+using TimeSheetAPI.Model.Object;
+using TimeSheetAPI.Helper;
+using Query = TimeSheetAPI.Helper.Query;
+namespace TimeSheetAPI.DataLayer
 {
-    using TimeSheet.Models;
-    using TimeSheet.Helper; // Import the Query class
-    using Microsoft.Data.SqlClient;
-    using Dapper;
-
     public class EmployeeDL
     {
         private readonly DatabaseHelper _databaseHelper;
 
-        public EmployeeDL(DatabaseHelper databaseHelper)
+        public EmployeeDL()//DatabaseHelper databaseHelper)
         {
-            _databaseHelper = databaseHelper;
+            _databaseHelper = new();
         }
 
         public Employee? ValidateEmployee(string employeeId, string password)
@@ -20,7 +20,7 @@ namespace TimeSheet.DataLayer
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                var result = connection.QueryFirstOrDefault<Employee>(Query.ValidateEmployeeQuery, new { EmployeeId = employeeId, Password = password });
+                var result = connection.QueryFirstOrDefault<Employee>(Query.Employee.ValidateEmployeeQuery, new { EmployeeId = employeeId, Password = password });
                 return result;
             }
         }
@@ -32,7 +32,7 @@ namespace TimeSheet.DataLayer
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                
+
                 // Start transaction
                 using (var transaction = connection.BeginTransaction())
                 {
@@ -41,13 +41,13 @@ namespace TimeSheet.DataLayer
                         // Update WFH balance if status is WFH (2)
                         if (statusId == 2)
                         {
-                            int rowsAffected = connection.Execute(Query.UpdateWfhBalance, new { EmployeeId = employeeId }, transaction);
+                            int rowsAffected = connection.Execute(Query.Employee.UpdateWfhBalance, new { EmployeeId = employeeId }, transaction);
                             if (rowsAffected == 0) return false; // No WFH balance left to reduce
                         }
                         // Update Leave balance if status is Leave (3)
                         else if (statusId == 3)
                         {
-                            int rowsAffected = connection.Execute(Query.UpdateLeaveBalance, new { EmployeeId = employeeId }, transaction);
+                            int rowsAffected = connection.Execute(Query.Employee.UpdateLeaveBalance, new { EmployeeId = employeeId }, transaction);
                             if (rowsAffected == 0) return false; // No leave balance left to reduce
                         }
 
@@ -66,19 +66,19 @@ namespace TimeSheet.DataLayer
         }
 
         public Employee? GetEmployeeById(string employeeId)
-       {
-             string connectionString = _databaseHelper.GetConnectionString();
-             using (var connection = new SqlConnection(connectionString))
-          {
-             return connection.QueryFirstOrDefault<Employee>( Query.GetEmployeeById,  new { EmployeeId = employeeId });
-          }
-           
+        {
+            string connectionString = _databaseHelper.GetConnectionString();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                return connection.QueryFirstOrDefault<Employee>(Query.Employee.GetEmployeeById, new { EmployeeId = employeeId });
+            }
+
         }
 
-  
 
 
 
-    
+
+
     }
 }

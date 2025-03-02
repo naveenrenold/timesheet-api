@@ -1,31 +1,24 @@
-namespace TimeSheet.DataLayer
+using Microsoft.Data.SqlClient;
+using TimeSheetAPI.Helper;
+using Query = TimeSheetAPI.Helper.Query;
+using Dapper;
+using TimeSheetAPI.Model.Object;
+namespace TimeSheetAPI.DataLayer
 {
-    using TimeSheet.Models;
-    using TimeSheet.Helper;
-    using Microsoft.Data.SqlClient;
-    using System;
-    using System.Data;
-    using Dapper;
-
-    public class AttendanceDL
+    public class AttendanceDL()//DatabaseHelper databaseHelper)
     {
-        private readonly DatabaseHelper _databaseHelper;
-
-        public AttendanceDL(DatabaseHelper databaseHelper)
-        {
-            _databaseHelper = databaseHelper;
-        }
+        private readonly DatabaseHelper _databaseHelper = new();
 
         public bool AddEmployeeAttendance(EmployeeAttendance employeeAttendance)
         {
             string connectionString = _databaseHelper.GetConnectionString();
-            
+
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                var result = connection.Execute(Query.AddEmployeeAttendance, employeeAttendance);   
-                return result > 0;             
-            }            
+                var result = connection.Execute(Query.Attendance.AddEmployeeAttendance, employeeAttendance);
+                return result > 0;
+            }
         }
     }
 }
