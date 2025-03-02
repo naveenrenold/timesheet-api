@@ -58,10 +58,7 @@ namespace TimeSheetAPI.Controller
                 // var employee = _employeeDL.GetEmployeeDetails(attendanceUpdateRequest.EmployeeId);
                 if (success)
                 {
-                    return Ok(
-
-
-             );
+                    return Ok();
                 }
 
                 return BadRequest(new { message = "Failed to update attendance. Check if balances are available." });
