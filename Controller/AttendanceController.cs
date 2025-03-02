@@ -1,20 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
-using TimeSheet.DataLayer;
-using TimeSheet.Models;
-using System;
+using TimeSheetAPI.DataLayer;
+using TimeSheetAPI.Model.Object;
 
-namespace TimeSheet.Controllers
+namespace TimeSheetAPI.Controller
 {
-    [Route("api/attendance")]  
+    [Route("api/attendance")]
     [ApiController]
-    public class AttendanceController : ControllerBase
+    public class AttendanceController : ControllerBase//(AttendanceDL attendanceDL) : ControllerBase
     {
-        private readonly AttendanceDL _attendanceDL;
-
-        public AttendanceController(AttendanceDL attendanceDL)
-        {
-            _attendanceDL = attendanceDL;
-        }
+        private readonly AttendanceDL _attendanceDL = new();
 
         [HttpPost("attendance")]
         public IActionResult AddEmployeeAttendance([FromBody] EmployeeAttendance employeeAttendance)
@@ -25,13 +19,13 @@ namespace TimeSheet.Controllers
                 {
                     return BadRequest(new { message = "Invalid attendance data." });
                 }
-                employeeAttendance.StatusId ??= 1;                
+                employeeAttendance.StatusId ??= 1;
                 var attendance = _attendanceDL.AddEmployeeAttendance(employeeAttendance);
 
                 if (attendance)
                     return Ok(new { message = "Attendance added successfully.", attendance });
 
-               return BadRequest(new { message = "Failed to add attendance." });
+                return BadRequest(new { message = "Failed to add attendance." });
             }
             catch (Exception ex)
             {
