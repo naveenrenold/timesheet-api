@@ -12,9 +12,9 @@ namespace TimeSheetAPI.Controller
         private readonly EmployeeDL _employeeDL;
 
         // Constructor injection
-        public EmployeeController(EmployeeDL employeeDL)
+        public EmployeeController()//EmployeeDL employeeDL)
         {
-            _employeeDL = employeeDL;
+            _employeeDL = new();
         }
 
         [HttpPost("login")]

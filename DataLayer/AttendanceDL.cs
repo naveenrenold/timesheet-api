@@ -5,9 +5,9 @@ using Dapper;
 using TimeSheetAPI.Model.Object;
 namespace TimeSheetAPI.DataLayer
 {
-    public class AttendanceDL(DatabaseHelper databaseHelper)
+    public class AttendanceDL()//DatabaseHelper databaseHelper)
     {
-        private readonly DatabaseHelper _databaseHelper = databaseHelper;
+        private readonly DatabaseHelper _databaseHelper = new();
 
         public bool AddEmployeeAttendance(EmployeeAttendance employeeAttendance)
         {

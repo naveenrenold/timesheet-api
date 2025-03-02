@@ -7,11 +7,11 @@ builder.Services.AddSwaggerGen();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
-builder.Services.AddSingleton<EmployeeDL>();
-builder.Services.AddSingleton<DatabaseHelper>();
-builder.Services.AddScoped<EmployeeDL>();
-builder.Services.AddSingleton<AttendanceDL>();
-builder.Services.AddScoped<AttendanceDL>();
+// builder.Services.AddSingleton<EmployeeDL>();
+// builder.Services.AddSingleton<DatabaseHelper>();
+// builder.Services.AddScoped<EmployeeDL>();
+// builder.Services.AddSingleton<AttendanceDL>();
+// builder.Services.AddScoped<AttendanceDL>();
 // Enable CORS policy
 builder.Services.AddCors(options =>
 {

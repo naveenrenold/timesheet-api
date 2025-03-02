@@ -6,9 +6,9 @@ namespace TimeSheetAPI.Controller
 {
     [Route("api/attendance")]
     [ApiController]
-    public class AttendanceController(AttendanceDL attendanceDL) : ControllerBase
+    public class AttendanceController : ControllerBase//(AttendanceDL attendanceDL) : ControllerBase
     {
-        private readonly AttendanceDL _attendanceDL = attendanceDL;
+        private readonly AttendanceDL _attendanceDL = new();
 
         [HttpPost("attendance")]
         public IActionResult AddEmployeeAttendance([FromBody] EmployeeAttendance employeeAttendance)

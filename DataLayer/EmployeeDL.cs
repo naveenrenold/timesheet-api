@@ -9,9 +9,9 @@ namespace TimeSheetAPI.DataLayer
     {
         private readonly DatabaseHelper _databaseHelper;
 
-        public EmployeeDL(DatabaseHelper databaseHelper)
+        public EmployeeDL()//DatabaseHelper databaseHelper)
         {
-            _databaseHelper = databaseHelper;
+            _databaseHelper = new();
         }
 
         public Employee? ValidateEmployee(string employeeId, string password)
