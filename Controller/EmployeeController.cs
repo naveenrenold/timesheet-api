@@ -1,14 +1,12 @@
-namespace TimeSheet.Controller
-{
-    using System.Data;
-    using System.Net;
-    using Microsoft.AspNetCore.Http.HttpResults;
-    using Microsoft.AspNetCore.Mvc;
-    using TimeSheet.DataLayer;  
-    using TimeSheet.Models;   
+using Microsoft.AspNetCore.Mvc;
+using TimeSheetAPI.DataLayer;
+using TimeSheetAPI.Model.Object;
+using TimeSheetAPI.Model.Request;
 
-   [Route("api/employee")]
-   [ApiController]
+namespace TimeSheetAPI.Controller
+{
+    [Route("api/employee")]
+    [ApiController]
     public class EmployeeController : ControllerBase
     {
         private readonly EmployeeDL _employeeDL;
@@ -27,7 +25,8 @@ namespace TimeSheet.Controller
                 var employee = _employeeDL.ValidateEmployee(loginRequest.EmployeeId!, loginRequest.Password!);
                 if (employee != null)
                 {
-                    return Ok(new {  
+                    return Ok(new
+                    {
                         name = employee.Name,
                         employeeId = employee.EmployeeId,
                         totalWFH = employee.TotalWFH,
@@ -59,13 +58,8 @@ namespace TimeSheet.Controller
                 // var employee = _employeeDL.GetEmployeeDetails(attendanceUpdateRequest.EmployeeId);
                 if (success)
                 {
-                    return Ok(new{  name = attendanceUpdateRequest.Name,
-                employeeId = attendanceUpdateRequest.EmployeeId,
-                gender = attendanceUpdateRequest.Gender,   // Keep gender
-                specialization = attendanceUpdateRequest.Specialization,   // Keep specialization
-                totalWFH = attendanceUpdateRequest.TotalWFH,
-                totalLeaves = attendanceUpdateRequest.TotalLeaves}
-                  
+                    return Ok(
+
 
              );
                 }
@@ -79,15 +73,15 @@ namespace TimeSheet.Controller
         }
 
         [HttpGet("getEmployee/{employeeId}")]
-public IActionResult GetEmployee(string employeeId)
-{
-    var employee = _employeeDL.GetEmployeeById(employeeId);
-    if (employee != null)
-    {
-        return Ok(employee);
-    }
-    return NotFound(new { message = "Employee not found" });
-}
+        public IActionResult GetEmployee(string employeeId)
+        {
+            var employee = _employeeDL.GetEmployeeById(employeeId);
+            if (employee != null)
+            {
+                return Ok(employee);
+            }
+            return NotFound(new { message = "Employee not found" });
+        }
 
     }
 }
