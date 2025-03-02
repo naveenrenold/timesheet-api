@@ -59,14 +59,7 @@ namespace TimeSheet.Controller
                 // var employee = _employeeDL.GetEmployeeDetails(attendanceUpdateRequest.EmployeeId);
                 if (success)
                 {
-                    return Ok(new{  name = attendanceUpdateRequest.Name,
-                employeeId = attendanceUpdateRequest.EmployeeId,
-                gender = attendanceUpdateRequest.Gender,   // Keep gender
-                specialization = attendanceUpdateRequest.Specialization,   // Keep specialization
-                totalWFH = attendanceUpdateRequest.TotalWFH,
-                totalLeaves = attendanceUpdateRequest.TotalLeaves}
-                  
-
+                    return Ok(
              );
                 }
 
