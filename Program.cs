@@ -1,17 +1,10 @@
-using TimeSheetAPI.DataLayer;
 using TimeSheetAPI.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddSwaggerGen();
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
-// builder.Services.AddSingleton<EmployeeDL>();
-// builder.Services.AddSingleton<DatabaseHelper>();
-// builder.Services.AddScoped<EmployeeDL>();
-// builder.Services.AddSingleton<AttendanceDL>();
-// builder.Services.AddScoped<AttendanceDL>();
 // Enable CORS policy
 builder.Services.AddCors(options =>
 {
@@ -28,15 +21,15 @@ app.UseCors("AllowReactApp");  // Apply the CORS policy
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(
+        options =>
+        {
+            options.SwaggerEndpoint("/openapi/v1.json", "Version One");
+        }
+    );
 }
 
 app.UseHttpsRedirection();
-
-var dbHelper = new DatabaseHelper();
-// dbHelper.TestConnection(); 
-// dbHelper.GetData();
 app.MapControllers();
 app.Run();
 

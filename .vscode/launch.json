@@ -30,12 +30,5 @@
         }
       }
     }
-    //,
-    // {
-    //   "name": "C#: TimeSheetAPI [Default Configuration]",
-    //   "type": "dotnet",
-    //   "request": "launch",
-    //   "projectPath": "${workspaceFolder}\\TimeSheetAPI.csproj"
-    // }
   ]
 }

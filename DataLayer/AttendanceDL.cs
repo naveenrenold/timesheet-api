@@ -3,22 +3,22 @@ using TimeSheetAPI.Helper;
 using Query = TimeSheetAPI.Helper.Query;
 using Dapper;
 using TimeSheetAPI.Model.Object;
-namespace TimeSheetAPI.DataLayer
+namespace TimeSheetAPI.DataLayer;
+
+public class AttendanceDL()
 {
-    public class AttendanceDL()//DatabaseHelper databaseHelper)
+    private readonly DatabaseHelper _databaseHelper = new();
+
+    public bool AddEmployeeAttendance(EmployeeAttendance employeeAttendance)
     {
-        private readonly DatabaseHelper _databaseHelper = new();
+        string connectionString = _databaseHelper.GetConnectionString();
 
-        public bool AddEmployeeAttendance(EmployeeAttendance employeeAttendance)
+        using (var connection = new SqlConnection(connectionString))
         {
-            string connectionString = _databaseHelper.GetConnectionString();
-
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                var result = connection.Execute(Query.Attendance.AddEmployeeAttendance, employeeAttendance);
-                return result > 0;
-            }
+            connection.Open();
+            var result = connection.Execute(Query.Attendance.AddEmployeeAttendance, employeeAttendance);
+            return result > 0;
         }
     }
 }
+
