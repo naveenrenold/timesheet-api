@@ -8,7 +8,7 @@ inner join ActionRoleMapping AR on  A.ActionId = AR.ActionId
 inner join Role R on R.RoleId = AR.RoleId
 inner join Employee E on E.RoleId = AR.RoleId
 where
-EmployeeId = @EmployeeId 
+EmployeeId = @employeeId 
 """;
     }
 

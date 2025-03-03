@@ -9,7 +9,7 @@ namespace TimeSheetAPI.DataLayer
     {
         private readonly DatabaseHelper _databaseHelper;
 
-        public EmployeeDL()//DatabaseHelper databaseHelper)
+        public EmployeeDL()
         {
             _databaseHelper = new();
         }

@@ -3,56 +3,55 @@ using TimeSheetAPI.DataLayer;
 using TimeSheetAPI.Model.Object;
 using TimeSheetAPI.Model.Request;
 
-namespace TimeSheetAPI.Controller
+namespace TimeSheetAPI.Controller;
+[Route("api/employee")]
+[ApiController]
+public class EmployeeController : ControllerBase
 {
-    [Route("api/employee")]
-    [ApiController]
-    public class EmployeeController : ControllerBase
+    private readonly EmployeeDL _employeeDL;
+
+    // Constructor injection
+    public EmployeeController()
     {
-        private readonly EmployeeDL _employeeDL;
+        _employeeDL = new();
+    }
 
-        // Constructor injection
-        public EmployeeController()//EmployeeDL employeeDL)
+    [HttpPost("login")]
+    public IActionResult Login([FromBody] LoginRequest loginRequest)
+    {
+        try
         {
-            _employeeDL = new();
-        }
-
-        [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest loginRequest)
-        {
-            try
+            var employee = _employeeDL.ValidateEmployee(loginRequest.EmployeeId!, loginRequest.Password!);
+            if (employee != null)
             {
-                var employee = _employeeDL.ValidateEmployee(loginRequest.EmployeeId!, loginRequest.Password!);
-                if (employee != null)
+                return Ok(new
                 {
-                    return Ok(new
-                    {
-                        name = employee.Name,
-                        employeeId = employee.EmployeeId,
-                        totalWFH = employee.TotalWFH,
-                        totalLeaves = employee.TotalLeaves,
-                        specialization = employee.Specialization,
-                        gender = employee.Gender
-                    });
-                }
-                return Unauthorized(new { message = "Invalid credentials" });
+                    name = employee.Name,
+                    employeeId = employee.EmployeeId,
+                    totalWFH = employee.TotalWFH,
+                    totalLeaves = employee.TotalLeaves,
+                    specialization = employee.Specialization,
+                    gender = employee.Gender
+                });
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
-            }
+            return Unauthorized(new { message = "Invalid credentials" });
         }
-
-        // New endpoint to update employee WFH and Leave balances
-        [HttpPost("updateattendance")]
-        public IActionResult UpdateAttendance([FromBody] AttendanceUpdateRequest attendanceUpdateRequest)
+        catch (Exception ex)
         {
-            try
+            return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+        }
+    }
+
+    // New endpoint to update employee WFH and Leave balances
+    [HttpPost("updateattendance")]
+    public IActionResult UpdateAttendance([FromBody] AttendanceUpdateRequest attendanceUpdateRequest)
+    {
+        try
+        {
+            if (attendanceUpdateRequest == null || string.IsNullOrEmpty(attendanceUpdateRequest.EmployeeId))
             {
-                if (attendanceUpdateRequest == null || string.IsNullOrEmpty(attendanceUpdateRequest.EmployeeId))
-                {
-                    return BadRequest(new { message = "Invalid data provided." });
-                }
+                return BadRequest(new { message = "Invalid data provided." });
+            }
 
                 var success = _employeeDL.UpdateEmployeeBalance(attendanceUpdateRequest.EmployeeId, attendanceUpdateRequest.StatusId);
                 // var employee = _employeeDL.GetEmployeeDetails(attendanceUpdateRequest.EmployeeId);
@@ -61,24 +60,23 @@ namespace TimeSheetAPI.Controller
                     return Ok();
                 }
 
-                return BadRequest(new { message = "Failed to update attendance. Check if balances are available." });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
-            }
+            return BadRequest(new { message = "Failed to update attendance. Check if balances are available." });
         }
-
-        [HttpGet("getEmployee/{employeeId}")]
-        public IActionResult GetEmployee(string employeeId)
+        catch (Exception ex)
         {
-            var employee = _employeeDL.GetEmployeeById(employeeId);
-            if (employee != null)
-            {
-                return Ok(employee);
-            }
-            return NotFound(new { message = "Employee not found" });
+            return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
         }
-
     }
+
+    [HttpGet("getEmployee/{employeeId}")]
+    public IActionResult GetEmployee(string employeeId)
+    {
+        var employee = _employeeDL.GetEmployeeById(employeeId);
+        if (employee != null)
+        {
+            return Ok(employee);
+        }
+        return NotFound(new { message = "Employee not found" });
+    }
+
 }
