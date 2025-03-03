@@ -16,7 +16,7 @@ public class AuthorisationController : ControllerBase
             return BadRequest("EmployeeId is not present");
         }
         var result = authorisationDL.GetAction(employeeId);
-        return Ok();
+        return Ok(result);
     }
 
 }
