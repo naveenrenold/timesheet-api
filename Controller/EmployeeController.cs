@@ -53,15 +53,12 @@ public class EmployeeController : ControllerBase
                 return BadRequest(new { message = "Invalid data provided." });
             }
 
-            var success = _employeeDL.UpdateEmployeeBalance(attendanceUpdateRequest.EmployeeId, attendanceUpdateRequest.StatusId);
-            // var employee = _employeeDL.GetEmployeeDetails(attendanceUpdateRequest.EmployeeId);
-            if (success)
-            {
-                return Ok(
-
-
-         );
-            }
+                var success = _employeeDL.UpdateEmployeeBalance(attendanceUpdateRequest.EmployeeId, attendanceUpdateRequest.StatusId);
+                // var employee = _employeeDL.GetEmployeeDetails(attendanceUpdateRequest.EmployeeId);
+                if (success)
+                {
+                    return Ok();
+                }
 
             return BadRequest(new { message = "Failed to update attendance. Check if balances are available." });
         }
