@@ -32,4 +32,14 @@ public class AttendanceController : ControllerBase
             return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
         }
     }
+
+    [HttpGet]
+    public IActionResult GetAttendance(string employeeId, DateTime fromDate, DateTime toDate)
+    {
+        if (!string.IsNullOrEmpty(employeeId))
+        {
+            return BadRequest("EmployeeId is a mandatory field");
+        }
+        var response = _attendanceDL.GetAttendance();
+    }
 }
