@@ -41,5 +41,6 @@ public class AttendanceController : ControllerBase
             return BadRequest("EmployeeId is a mandatory field");
         }
         var response = _attendanceDL.GetAttendance();
+        return Ok(response);        
     }
 }

@@ -7,6 +7,8 @@ namespace TimeSheetAPI.Helper.Query
             INSERT INTO EmployeeAttendance (AttendanceDate, EmployeeID, StatusId)
             VALUES (@AttendanceDate, @EmployeeID, @StatusId);";
 
+        public static readonly string GetAttendance = @"
+        ";
         //             Declare @FromDate date = '2025-02-01',
         // @ToDate date = '2025-03-01';
 
