@@ -33,14 +33,18 @@ public class AttendanceController : ControllerBase
         }
     }
 
-    [HttpGet]
+    [HttpGet("/attendance")]
     public IActionResult GetAttendance(string employeeId, DateTime fromDate, DateTime toDate)
     {
         if (!string.IsNullOrEmpty(employeeId))
         {
             return BadRequest("EmployeeId is a mandatory field");
-        }
-        var response = _attendanceDL.GetAttendance();
+        }        
+        var response = _attendanceDL.GetAttendance(employeeId , fromDate, toDate);
+        if(response.Any())
+        {
         return Ok(response);        
+        }
+        return StatusCode(500, "No data returned");
     }
 }

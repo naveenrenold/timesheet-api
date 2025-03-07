@@ -26,12 +26,12 @@ public class AttendanceDL
         }
     }
 
-    public List<string> GetAttendance(string employeeId, DateTime FromDate, DateTime ToDate)
+    public IEnumerable<string> GetAttendance(string employeeId, DateTime fromDate, DateTime toDate)
     {
         using (var connection = new SqlConnection(connectionString))
         {
             connection.Open();
-            var result = connection.Query<string>(Query.Attendance.GetAttendance, employeeAttendance);
+            var result = connection.Query<string>(Query.Attendance.GetAttendance, new {employeeId, fromDate, toDate});
             return result;
         }
     }
