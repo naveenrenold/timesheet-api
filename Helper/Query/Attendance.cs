@@ -15,14 +15,16 @@ namespace TimeSheetAPI.Helper.Query
         	select DATEADD(DAY, 1, dates) from datesCTE where dates < @ToDate
         )
         select dates as date, CASE
-        When DATENAME(WEEKDAY, dates) in ('Satuday', 'Sunday') Then 4
+        When DATENAME(WEEKDAY, dates) in ('Saturday', 'Sunday') Then 4
         When H.HolidayName is not NULL Then  4
         Else ISNULL(StatusId, 0) 
         End as StatusId
         from datesCTE d 
         left outer join EmployeeAttendance EA on d.dates = EA.AttendanceDate and EA.EmployeeID = @EmployeeId
         left outer join Holiday H on d.dates = H.HolidayDate        
-        order by dates";
+        order by dates
+        OPTION (MAXRECURSION 500)
+        ";
 
     }
 }

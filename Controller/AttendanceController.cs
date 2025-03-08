@@ -44,9 +44,9 @@ public class AttendanceController : ControllerBase
         {
             return BadRequest("From Date cannot be greater than current date");
         }
-        if (toDate != null && toDate > DateTime.Now)
+        if (toDate != null && toDate?.Month > DateTime.Now.Month)
         {
-            return BadRequest("To Date cannot be greater than current date");
+            return BadRequest("To Date cannot be greater than current month");
         }
 
         var response = _attendanceDL.GetAttendance(employeeId, fromDate, toDate);
