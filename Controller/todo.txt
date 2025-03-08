@@ -1,0 +1,33 @@
+Declare @FromDate date = '2025-03-01',
+@ToDate date = '2025-04-01';
+
+with datesCTE(dates) as 
+(
+	Select @FromDate  as startingDate
+	union all
+	select DATEADD(DAY, 1, dates) from datesCTE where dates < @ToDate
+)
+select dates as date, CASE
+When DATENAME(WEEKDAY, dates) in ('Satuday', 'Sunday') Then 0
+When H.HolidayName is not NULL Then  7
+Else ISNULL(StatusId, 0) 
+End as StatusId
+from datesCTE d 
+left outer join EmployeeAttendance EA on d.dates = EA.AttendanceDate
+left outer join Holiday H on d.dates = H.HolidayDate
+order by dates
+
+
+
+
+Select DATENAME(WEEKDAY, Dateadd(DAY, 2, getdate()))
+
+
+Select IIF(null is NULL, 1, 2)
+
+
+Select * from Status
+
+Select * from Holiday
+
+Insert into Holiday values('2025-03-21', 'Ramzan')
