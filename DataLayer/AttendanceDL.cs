@@ -3,6 +3,7 @@ using TimeSheetAPI.Helper;
 using Query = TimeSheetAPI.Helper.Query;
 using Dapper;
 using TimeSheetAPI.Model.Object;
+using TimeSheetAPI.Model.Response;
 namespace TimeSheetAPI.DataLayer;
 
 public class AttendanceDL
@@ -17,7 +18,7 @@ public class AttendanceDL
     }
 
     public bool AddEmployeeAttendance(EmployeeAttendance employeeAttendance)
-    {        
+    {
         using (var connection = new SqlConnection(connectionString))
         {
             connection.Open();
@@ -26,12 +27,14 @@ public class AttendanceDL
         }
     }
 
-    public IEnumerable<string> GetAttendance(string employeeId, DateTime fromDate, DateTime toDate)
+    public IEnumerable<AttendanceStatus> GetAttendance(string employeeId, DateTime? fromDate, DateTime? toDate)
     {
+        fromDate ??= DateTime.Now.AddMonths(-4);
+        toDate ??= DateTime.Now;
         using (var connection = new SqlConnection(connectionString))
         {
             connection.Open();
-            var result = connection.Query<string>(Query.Attendance.GetAttendance, new {employeeId, fromDate, toDate});
+            var result = connection.Query<AttendanceStatus>(Query.Attendance.GetAttendance, new { employeeId, fromDate, toDate });
             return result;
         }
     }

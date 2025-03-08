@@ -8,20 +8,21 @@ namespace TimeSheetAPI.Helper.Query
             VALUES (@AttendanceDate, @EmployeeID, @StatusId);";
 
         public static readonly string GetAttendance = @"
-        ";
-        //             Declare @FromDate date = '2025-02-01',
-        // @ToDate date = '2025-03-01';
-
-        // with datesCTE(dates) as 
-        // (
-        // 	Select @FromDate  as startingDate
-        // 	union all
-        // 	select DATEADD(DAY, 1, dates) from datesCTE where dates < @ToDate
-        // )
-        // select dates as date, ISNULL(StatusId, 0) as StatusId from datesCTE d 
-        // left outer join EmployeeAttendance EA on d.dates = EA.AttendanceDate
-        // left outer join Holiday H on d.dates = H.HolidayDate
-        // order by dates
+        with datesCTE(dates) as 
+        (
+        	Select @FromDate  as startingDate
+        	union all
+        	select DATEADD(DAY, 1, dates) from datesCTE where dates < @ToDate
+        )
+        select dates as date, CASE
+        When DATENAME(WEEKDAY, dates) in ('Satuday', 'Sunday') Then 4
+        When H.HolidayName is not NULL Then  4
+        Else ISNULL(StatusId, 0) 
+        End as StatusId
+        from datesCTE d 
+        left outer join EmployeeAttendance EA on d.dates = EA.AttendanceDate and EA.EmployeeID = @EmployeeId
+        left outer join Holiday H on d.dates = H.HolidayDate        
+        order by dates";
 
     }
 }

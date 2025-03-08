@@ -33,17 +33,26 @@ public class AttendanceController : ControllerBase
         }
     }
 
-    [HttpGet("/attendance")]
-    public IActionResult GetAttendance(string employeeId, DateTime fromDate, DateTime toDate)
+    [HttpGet]
+    public IActionResult GetAttendance(string employeeId, DateTime? fromDate, DateTime? toDate)
     {
-        if (!string.IsNullOrEmpty(employeeId))
+        if (string.IsNullOrEmpty(employeeId))
         {
             return BadRequest("EmployeeId is a mandatory field");
-        }        
-        var response = _attendanceDL.GetAttendance(employeeId , fromDate, toDate);
-        if(response.Any())
+        }
+        if (fromDate != null && fromDate > DateTime.Now)
         {
-        return Ok(response);        
+            return BadRequest("From Date cannot be greater than current date");
+        }
+        if (toDate != null && toDate > DateTime.Now)
+        {
+            return BadRequest("To Date cannot be greater than current date");
+        }
+
+        var response = _attendanceDL.GetAttendance(employeeId, fromDate, toDate);
+        if (response.Any())
+        {
+            return Ok(response);
         }
         return StatusCode(500, "No data returned");
     }
