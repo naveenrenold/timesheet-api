@@ -10,8 +10,8 @@ public class AttendanceController : ControllerBase
 {
     private readonly AttendanceDL _attendanceDL = new();
 
-    [HttpPost("attendance")]
-    public IActionResult AddEmployeeAttendance([FromBody] EmployeeAttendance employeeAttendance)
+    [HttpPost]
+    public IActionResult AddAttendance([FromBody] EmployeeAttendance employeeAttendance)
     {
         try
         {
@@ -28,10 +28,10 @@ public class AttendanceController : ControllerBase
             }
             if (prevAttendance!.FirstOrDefault()!.StatusId == 0)
             {
-                var statusName = (Status)prevAttendance.FirstOrDefault()!.StatusId;
+                var statusName = (Status)prevAttendance!.FirstOrDefault()!.StatusId;
                 return BadRequest(new { message = $"Status {statusName} is already present for selected date." });
             }
-            attendance = _attendanceDL.AddEmployeeAttendance(employeeAttendance);
+            attendance = _attendanceDL.AddAttendance(employeeAttendance);
             if (attendance)
             {
             return Ok(new { message = "Attendance added successfully.", attendance });
@@ -45,7 +45,7 @@ public class AttendanceController : ControllerBase
         }
     }
 
-    [HttpGet]
+[HttpGet]
 public IActionResult GetAttendance(string employeeId, DateTime? fromDate, DateTime? toDate)
 {
     if (string.IsNullOrEmpty(employeeId))
