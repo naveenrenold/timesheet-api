@@ -1,8 +1,12 @@
 namespace TimeSheetAPI.Model.Object
 {
-    public class Status
+    enum Status
     {
-        public int StatusId { get; set; }
-        public string? StatusName { get; set; }
+        Unknown,
+        Present,
+        WFH,
+        Leave,
+        Holiday,
+        NotaDay,
     }
 }

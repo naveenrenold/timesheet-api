@@ -74,11 +74,5 @@ namespace TimeSheetAPI.DataLayer
             }
 
         }
-
-
-
-
-
-
     }
 }

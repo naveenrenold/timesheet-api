@@ -17,7 +17,7 @@ public class AttendanceDL
         connectionString = _databaseHelper.GetConnectionString();
     }
 
-    public bool AddEmployeeAttendance(EmployeeAttendance employeeAttendance)
+    public bool AddAttendance(EmployeeAttendance employeeAttendance)
     {
         using (var connection = new SqlConnection(connectionString))
         {
