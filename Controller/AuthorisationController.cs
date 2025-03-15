@@ -4,9 +4,11 @@ using TimeSheetAPI.DataLayer;
 namespace TimeSheetAPI.Controller;
 [ApiController]
 [Route("api/auth")]
-public class AuthorisationController : ControllerBase
+public class AuthorisationController() : ControllerBase
 {
+
     private readonly AuthorisationDL authorisationDL = new();
+
 
     [HttpGet]
     public IActionResult GetActions(string employeeId)
