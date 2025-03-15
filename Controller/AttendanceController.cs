@@ -10,8 +10,8 @@ public class AttendanceController : ControllerBase
 {
     private readonly AttendanceDL _attendanceDL = new();
 
-    [HttpPost("attendance")]
-    public IActionResult AddEmployeeAttendance([FromBody] EmployeeAttendance employeeAttendance)
+    [HttpPost]
+    public IActionResult AddAttendance([FromBody] EmployeeAttendance employeeAttendance)
     {
         try
         {
@@ -20,10 +20,22 @@ public class AttendanceController : ControllerBase
                 return BadRequest(new { message = "Invalid attendance data." });
             }
             employeeAttendance.StatusId ??= 1;
-            var attendance = _attendanceDL.AddEmployeeAttendance(employeeAttendance);
-
+            var prevAttendance = _attendanceDL.GetAttendance(employeeAttendance.EmployeeId.ToString(), employeeAttendance.AttendanceDate, employeeAttendance.AttendanceDate);
+            var attendance = false;
+            if (prevAttendance != null && !prevAttendance.Any())
+            {
+                return BadRequest(new { message = "Failed to add attendance." });
+            }
+            if (prevAttendance!.FirstOrDefault()!.StatusId != 0)
+            {
+                var statusName = (Status)prevAttendance!.FirstOrDefault()!.StatusId;
+                return BadRequest(new { message = $"Status is already present as \"{statusName}\" for selected date." });
+            }
+            attendance = _attendanceDL.AddAttendance(employeeAttendance);
             if (attendance)
+            {
                 return Ok(new { message = "Attendance added successfully.", attendance });
+            }
 
             return BadRequest(new { message = "Failed to add attendance." });
         }

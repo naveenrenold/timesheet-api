@@ -3,9 +3,9 @@ namespace TimeSheetAPI.Helper.Query
     public static class Employee
     {
         public static readonly string GetEmployeeById = @"
-    SELECT e.EmployeeId, e.Gender 
-    FROM Employee e 
-    WHERE e.EmployeeId = @EmployeeId";
+            SELECT e.EmployeeId, e.Gender 
+            FROM Employee e 
+            WHERE e.EmployeeId = @EmployeeId";
         // SQL query to validate employee and fetch additional details
         public static readonly string ValidateEmployeeQuery = @"
             SELECT e.EmployeeId, e.Name, e.TotalWFH, e.TotalLeaves, e.Specialization, e.Gender
