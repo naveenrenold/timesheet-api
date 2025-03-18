@@ -1,0 +1,7 @@
+17/3/25
+1. Attendance validations and ui error messages
+
+In UI vaidation message must be displayed
+
+18/3/25
+1. Updated the date issue for sql .Use Select getdate() at time zone 'UTC' at time zone 'India Standard Time' as localtime

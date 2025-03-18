@@ -15,10 +15,6 @@ public class AttendanceController : ControllerBase
     {
         try
         {
-            if (employeeAttendance == null)
-            {
-                return BadRequest(new { message = "Invalid attendance data." });
-            }
             employeeAttendance.StatusId ??= 1;
             var prevAttendance = _attendanceDL.GetAttendance(employeeAttendance.EmployeeId.ToString(), employeeAttendance.AttendanceDate, employeeAttendance.AttendanceDate);
             var attendance = false;
