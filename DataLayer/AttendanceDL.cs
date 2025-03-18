@@ -29,8 +29,9 @@ public class AttendanceDL
 
     public IEnumerable<AttendanceStatus> GetAttendance(string employeeId, DateTime? fromDate, DateTime? toDate)
     {
-        fromDate ??= DateTime.Now.AddMonths(-4);
-        toDate ??= DateTime.Now;
+        fromDate = fromDate is null ? DateTime.Now.AddMonths(-4).Date : DateTime.Today;
+        toDate = toDate is null ? DateTime.Today : DateTime.Now.Date;
+
         using (var connection = new SqlConnection(connectionString))
         {
             connection.Open();
