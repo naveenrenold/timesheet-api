@@ -1,0 +1,4 @@
+17/3/25
+1. Attendance validations and ui error messages
+
+In UI vaidation message must be displayed
