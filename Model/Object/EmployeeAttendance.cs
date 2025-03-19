@@ -1,19 +1,17 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.OpenApi.Validations;
 
 namespace TimeSheetAPI.Model.Object
 {
     public class EmployeeAttendance : IValidatableObject
     {
-        [Required(ErrorMessage = "AttendanceDate is required")]
-        [DataType(DataType.DateTime)]
-        public DateTime AttendanceDate { get; set; }
+        [Required]
+        public DateTime AttendanceDate { get; set; } = DateTime.Now;
 
-        [Required(ErrorMessage = "EmployeeId is required")]
+        [Range(1, int.MaxValue, ErrorMessage = "EmployeeId is required")]
         public int EmployeeId { get; set; }
 
-        [EnumDataType(typeof(Status), ErrorMessage = "StatusId must be a valid value")]
-        public int? StatusId { get; set; }
+        [EnumDataType(typeof(Status))]
+        public int StatusId { get; set; } = 1;
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
