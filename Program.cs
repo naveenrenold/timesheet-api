@@ -8,7 +8,7 @@ builder.Services.AddControllers().ConfigureApiBehaviorOptions((options) =>
 {
     options.InvalidModelStateResponseFactory = (e) =>
     {
-        var error = e.ModelState.Where(a => a.Value != null && a.Value.Errors.Count > 0).Select(a => a.Value!.Errors.Select(b => new { b.ErrorMessage, b.Exception, Field = a.Key })).SelectMany(a => a);
+        var error = e.ModelState.Where(a => a.Value != null && a.Value.Errors.Count > 0).Select(a => a.Value!.Errors.Select(b => new { b.ErrorMessage, b.Exception, Field = a.Key })).SelectMany(a => a).FirstOrDefault();
         var responseMsg = new
         {
             Message = "Validation failed",
