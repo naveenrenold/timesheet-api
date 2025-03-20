@@ -12,56 +12,69 @@ public class AttendanceController : ControllerBase
 
     [HttpPost]
     public IActionResult AddAttendance([FromBody] EmployeeAttendance employeeAttendance)
-    {
-        try
+    {           
+        var Attendance = _attendanceDL.GetAttendance(employeeAttendance.EmployeeId.ToString(), employeeAttendance.AttendanceDate, employeeAttendance.AttendanceDate);
+        var error = ValidatePrevAttendance(Attendance);
+        if (error != null)
         {
-            employeeAttendance.StatusId ??= 1;
-            var prevAttendance = _attendanceDL.GetAttendance(employeeAttendance.EmployeeId.ToString(), employeeAttendance.AttendanceDate, employeeAttendance.AttendanceDate);
-            var attendance = false;
-            if (prevAttendance != null && !prevAttendance.Any())
-            {
-                return BadRequest(new { message = "Failed to add attendance." });
-            }
-            if (prevAttendance!.FirstOrDefault()!.StatusId != 0)
-            {
-                var statusName = (Status)prevAttendance!.FirstOrDefault()!.StatusId;
-                return BadRequest(new { message = $"Status is already present as \"{statusName}\" for selected date." });
-            }
-            attendance = _attendanceDL.AddAttendance(employeeAttendance);
-            if (attendance)
-            {
-                return Ok(new { message = "Attendance added successfully.", attendance });
-            }
+            return BadRequest(error);
+        }
+        var attendance = _attendanceDL.AddAttendance(employeeAttendance);
+        if (attendance)
+        {
+            return Ok(new { message = "Attendance added successfully!", attendance });
+        }
 
-            return BadRequest(new { message = "Failed to add attendance." });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
-        }
+        return StatusCode(500, new { message = "Failed to add attendance." });
     }
 
     [HttpGet]
     public IActionResult GetAttendance(string employeeId, DateTime? fromDate, DateTime? toDate)
     {
-        if (string.IsNullOrEmpty(employeeId))
+        var error = ValidateGetAttendance(employeeId, fromDate, toDate);
+        if (error.Any())
         {
-            return BadRequest("EmployeeId is a mandatory field");
+            return BadRequest(new { Error = error });
         }
-        if (fromDate != null && fromDate > DateTime.Now)
-        {
-            return BadRequest("From Date cannot be greater than current date");
-        }
-        if (toDate != null && toDate?.Month > DateTime.Now.Month)
-        {
-            return BadRequest("To Date cannot be greater than current month");
-        }
-
         var response = _attendanceDL.GetAttendance(employeeId, fromDate, toDate);
         if (response.Any())
         {
             return Ok(response);
         }
         return StatusCode(500, "No data returned");
+    }
+    [NonAction]
+    public IEnumerable<ApiError> ValidateGetAttendance(string employeeId, DateTime? fromDate, DateTime? toDate)
+    {
+        if (string.IsNullOrEmpty(employeeId))
+        {
+            yield return new ApiError("EmployeeId is a mandatory field");
+        }
+        if (fromDate != null && fromDate > DateTime.Now && fromDate > DateTime.Now.AddYears(-1))
+        {
+            yield return new ApiError("From Date cannot be greater than current date");
+        }
+        if (fromDate != null && fromDate < DateTime.Now.AddYears(-1))
+        {
+            yield return new ApiError("From Date cannot be older than 1 year");
+        }
+        if (toDate != null && toDate?.Month > DateTime.Now.Month)
+        {
+            yield return new ApiError("To Date cannot be greater than current month");
+        }
+    }
+    [NonAction]
+    public ApiError? ValidatePrevAttendance(IEnumerable<Model.Response.AttendanceStatus>? attendance)
+    {
+        if (attendance != null && !attendance.Any())
+        {
+            return new ApiError("Failed to get attendance.");
+        }
+        if (attendance!.FirstOrDefault()!.StatusId != 0)
+        {
+            var statusName = (Status)attendance!.FirstOrDefault()!.StatusId;
+            return new ApiError($"Status is already present as \"{statusName}\" for selected date.");
+        }
+        return null;
     }
 }

@@ -8,15 +8,16 @@ namespace TimeSheetAPI.DataLayer
     public class EmployeeDL
     {
         private readonly DatabaseHelper _databaseHelper;
+        private readonly string connectionString;
 
         public EmployeeDL()
         {
             _databaseHelper = new();
+            connectionString = _databaseHelper.GetConnectionString();
         }
 
         public Employee? ValidateEmployee(string employeeId, string password)
         {
-            string connectionString = _databaseHelper.GetConnectionString();
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -28,7 +29,6 @@ namespace TimeSheetAPI.DataLayer
         // Method to update employee WFH or leave balance based on attendance status
         public bool UpdateEmployeeBalance(string employeeId, int statusId)
         {
-            string connectionString = _databaseHelper.GetConnectionString();
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -67,7 +67,6 @@ namespace TimeSheetAPI.DataLayer
 
         public Employee? GetEmployeeById(string employeeId)
         {
-            string connectionString = _databaseHelper.GetConnectionString();
             using (var connection = new SqlConnection(connectionString))
             {
                 return connection.QueryFirstOrDefault<Employee>(Query.Employee.GetEmployeeById, new { EmployeeId = employeeId });

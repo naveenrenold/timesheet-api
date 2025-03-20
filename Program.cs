@@ -1,8 +1,23 @@
+using Microsoft.AspNetCore.Mvc;
+
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddControllers();
+builder.Services.AddControllers().ConfigureApiBehaviorOptions((options) =>
+{
+    options.InvalidModelStateResponseFactory = (e) =>
+    {
+        var error = e.ModelState.Where(a => a.Value != null && a.Value.Errors.Count > 0).Select(a => a.Value!.Errors.Select(b => new { b.ErrorMessage, b.Exception, Field = a.Key })).SelectMany(a => a).FirstOrDefault();
+        var responseMsg = new
+        {
+            Message = "Validation failed",
+            Error = error
+
+        };
+        return new BadRequestObjectResult(responseMsg);
+    };
+});
 
 // Enable CORS policy
 builder.Services.AddCors(options =>

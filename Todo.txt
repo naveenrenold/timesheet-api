@@ -5,3 +5,12 @@ In UI vaidation message must be displayed
 
 18/3/25
 1. Updated the date issue for sql .Use Select getdate() at time zone 'UTC' at time zone 'India Standard Time' as localtime
+
+19/3/25
+1. Need to format api error output and match it with ui for 400
+Need to check my validation not working for from body 
+api validations over. check UI
+
+20/3/25
+
+1. check how to parse if null in request body
