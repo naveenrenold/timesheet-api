@@ -10,3 +10,7 @@ In UI vaidation message must be displayed
 1. Need to format api error output and match it with ui for 400
 Need to check my validation not working for from body 
 api validations over. check UI
+
+20/3/25
+
+1. check how to parse if null in request body

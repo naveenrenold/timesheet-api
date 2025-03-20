@@ -53,13 +53,11 @@ public class EmployeeController : ControllerBase
                 return BadRequest(new { message = "Invalid data provided." });
             }
 
-                var success = _employeeDL.UpdateEmployeeBalance(attendanceUpdateRequest.EmployeeId, attendanceUpdateRequest.StatusId);
-                // var employee = _employeeDL.GetEmployeeDetails(attendanceUpdateRequest.EmployeeId);
-                if (success)
-                {
-                    return Ok();
-                }
-
+            var success = _employeeDL.UpdateEmployeeBalance(attendanceUpdateRequest.EmployeeId, attendanceUpdateRequest.StatusId);
+            if (success)
+            {
+                return Ok("Success");
+            }
             return BadRequest(new { message = "Failed to update attendance. Check if balances are available." });
         }
         catch (Exception ex)
@@ -67,16 +65,4 @@ public class EmployeeController : ControllerBase
             return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
         }
     }
-
-    [HttpGet("getEmployee/{employeeId}")]
-    public IActionResult GetEmployee(string employeeId)
-    {
-        var employee = _employeeDL.GetEmployeeById(employeeId);
-        if (employee != null)
-        {
-            return Ok(employee);
-        }
-        return NotFound(new { message = "Employee not found" });
-    }
-
 }
