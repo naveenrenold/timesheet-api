@@ -14,3 +14,8 @@ api validations over. check UI
 20/3/25
 
 1. check how to parse if null in request body
+
+24/3/25
+1.Remember to add validation to Add attendance. Is it possible to combine add attendance and update balance
+2. trying to setup scanner first
+3. Scanner ui finished. focus on api validations and combining logic
