@@ -43,26 +43,26 @@ public class EmployeeController : ControllerBase
     }
 
     // New endpoint to update employee WFH and Leave balances
-    [HttpPost("updateattendance")]
-    public IActionResult UpdateAttendance([FromBody] AttendanceUpdateRequest attendanceUpdateRequest)
-    {
-        try
-        {
-            if (attendanceUpdateRequest == null || string.IsNullOrEmpty(attendanceUpdateRequest.EmployeeId))
-            {
-                return BadRequest(new { message = "Invalid data provided." });
-            }
+    // [HttpPost("updateattendance")]
+    // public IActionResult UpdateAttendance([FromBody] AttendanceUpdateRequest attendanceUpdateRequest)
+    // {
+    //     try
+    //     {
+    //         if (attendanceUpdateRequest == null || string.IsNullOrEmpty(attendanceUpdateRequest.EmployeeId))
+    //         {
+    //             return BadRequest(new { message = "Invalid data provided." });
+    //         }
 
-            var success = _employeeDL.UpdateEmployeeBalance(attendanceUpdateRequest.EmployeeId, attendanceUpdateRequest.StatusId);
-            if (success)
-            {
-                return Ok("Success");
-            }
-            return BadRequest(new { message = "Failed to update attendance. Check if balances are available." });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
-        }
-    }
+    //         var success = _employeeDL.UpdateEmployeeBalance(attendanceUpdateRequest.EmployeeId, attendanceUpdateRequest.StatusId);
+    //         if (success)
+    //         {
+    //             return Ok("Success");
+    //         }
+    //         return BadRequest(new { message = "Failed to update attendance. Check if balances are available." });
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+    //     }
+    // }
 }
