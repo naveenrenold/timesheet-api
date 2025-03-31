@@ -22,3 +22,24 @@ api validations over. check UI
 
 27/3/25
 1. Need to combine apis - done
+2. Reports - need to start on this
+
+29/3/25
+1.  reports module
+Start on the table 
+- can decide fields later
+No i need to know the fields to design everything
+
+Fields: employeeId, employee Name, total days,
+ No of working days present, no of absent, no days in office , no of days work from home, 
+
+ or just display all employee details but month we can change??
+
+ will be nice if we had arrow marks
+
+ figure out query
+
+ 30/3/25
+ 1.Figure out how to get total owrking days : either cte or equation
+
+ 

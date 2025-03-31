@@ -43,6 +43,14 @@ public class AttendanceController : ControllerBase
         }
         return StatusCode(500, "No data returned");
     }
+
+    [HttpGet]
+    [Route("Report")]
+    public IActionResult GetReport(string employeeId, DateTime? fromDate, DateTime? toDate)
+    {
+        var response = _attendanceDL.GetReport();
+    }
+
     [NonAction]
     public IEnumerable<ApiError> ValidateGetAttendance(string employeeId, DateTime? fromDate, DateTime? toDate)
     {

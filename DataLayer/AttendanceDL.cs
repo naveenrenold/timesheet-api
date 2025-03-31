@@ -70,5 +70,15 @@ public class AttendanceDL
             return result;
         }
     }
+
+    // // public getReport(string employeeId, DateTime? fromDate, DateTime? toDate)
+    // // {
+    // //     using(var connection = new SqlConnection())
+    // //     {
+    // //         connection.Open();
+    // //         var result = connection.Query<>(Query.Attendance., new { employeeId, fromDate, toDate });
+    // //         return result;
+    // //     }
+    // }
 }
 
