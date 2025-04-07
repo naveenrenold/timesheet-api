@@ -45,10 +45,15 @@ public class AttendanceController : ControllerBase
     }
 
     [HttpGet]
-    [Route("Report")]
+    [Route("report")]
     public IActionResult GetReport(string employeeId, DateTime? fromDate, DateTime? toDate)
     {
-        var response = _attendanceDL.GetReport();
+        var response = _attendanceDL.GetReport(employeeId, fromDate, toDate);
+        if(response.Any())
+        {
+            return Ok(response);
+        }
+        return StatusCode(500, "Attendance report data could not be loaded");
     }
 
     [NonAction]

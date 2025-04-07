@@ -71,14 +71,20 @@ public class AttendanceDL
         }
     }
 
-    // // public getReport(string employeeId, DateTime? fromDate, DateTime? toDate)
-    // // {
-    // //     using(var connection = new SqlConnection())
-    // //     {
-    // //         connection.Open();
-    // //         var result = connection.Query<>(Query.Attendance., new { employeeId, fromDate, toDate });
-    // //         return result;
-    // //     }
-    // }
+    public IEnumerable<AttendanceSummary> GetReport(string employeeId, DateTime? fromDate, DateTime? toDate)
+    {
+        var currentDate = DateTime.UtcNow.AddMinutes(330);
+        var currentYear = currentDate.Year;
+        var currentMonth = currentDate.Month;
+        var currentDay = currentDate.Day;
+        fromDate = fromDate is null ? new DateTime(currentYear, currentMonth, 1) : fromDate?.Date;
+        toDate = toDate is null ? new DateTime(currentYear, currentMonth, currentDay) : toDate?.Date;
+        using (var connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            var result = connection.Query<AttendanceSummary>(Query.Attendance.GetAttendanceSummary, new { employeeId, fromDate, toDate });
+            return result;
+        }
+    }
 }
 

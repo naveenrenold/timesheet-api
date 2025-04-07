@@ -42,4 +42,7 @@ Fields: employeeId, employee Name, total days,
  30/3/25
  1.Figure out how to get total owrking days : either cte or equation
 
- 
+ 7/4/25
+ 1.Starting after 1 week. Fix that query
+ 2. Query working perfect, need to arrange ui
+ 3. UI is set. Maybe skip this and go to final module?
