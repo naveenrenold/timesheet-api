@@ -46,3 +46,10 @@ Fields: employeeId, employee Name, total days,
  1.Starting after 1 week. Fix that query
  2. Query working perfect, need to arrange ui
  3. UI is set. Maybe skip this and go to final module?
+
+8/4/25
+1. Merged Harish changes
+2. Check for file exception improvements
+    Maybe a dialog box for success
+        Then start on final module 
+        Will need a table with each employee requests
