@@ -14,3 +14,35 @@ api validations over. check UI
 20/3/25
 
 1. check how to parse if null in request body
+
+24/3/25
+1.Remember to add validation to Add attendance. Is it possible to combine add attendance and update balance
+2. trying to setup scanner first
+3. Scanner ui finished. focus on api validations and combining logic
+
+27/3/25
+1. Need to combine apis - done
+2. Reports - need to start on this
+
+29/3/25
+1.  reports module
+Start on the table 
+- can decide fields later
+No i need to know the fields to design everything
+
+Fields: employeeId, employee Name, total days,
+ No of working days present, no of absent, no days in office , no of days work from home, 
+
+ or just display all employee details but month we can change??
+
+ will be nice if we had arrow marks
+
+ figure out query
+
+ 30/3/25
+ 1.Figure out how to get total owrking days : either cte or equation
+
+ 7/4/25
+ 1.Starting after 1 week. Fix that query
+ 2. Query working perfect, need to arrange ui
+ 3. UI is set. Maybe skip this and go to final module?

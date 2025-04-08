@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TimeSheetAPI.DataLayer;
 using TimeSheetAPI.Model.Object;
+using TimeSheetAPI.Helper.Constants;
 
 namespace TimeSheetAPI.Controller;
 
@@ -12,7 +13,7 @@ public class AttendanceController : ControllerBase
 
     [HttpPost]
     public IActionResult AddAttendance([FromBody] EmployeeAttendance employeeAttendance)
-    {           
+    {
         var Attendance = _attendanceDL.GetAttendance(employeeAttendance.EmployeeId.ToString(), employeeAttendance.AttendanceDate, employeeAttendance.AttendanceDate);
         var error = ValidatePrevAttendance(Attendance);
         if (error != null)
@@ -20,12 +21,11 @@ public class AttendanceController : ControllerBase
             return BadRequest(error);
         }
         var attendance = _attendanceDL.AddAttendance(employeeAttendance);
-        if (attendance)
+        if (attendance < 0)
         {
-            return Ok(new { message = "Attendance added successfully!", attendance });
+            return Ok(new { message = "Attendance added successfully!" });
         }
-
-        return StatusCode(500, new { message = "Failed to add attendance." });
+        return StatusCode(500, new { message = Constants.AddAttendanceErrorList[attendance] });
     }
 
     [HttpGet]
@@ -43,6 +43,19 @@ public class AttendanceController : ControllerBase
         }
         return StatusCode(500, "No data returned");
     }
+
+    [HttpGet]
+    [Route("report")]
+    public IActionResult GetReport(string employeeId, DateTime? fromDate, DateTime? toDate)
+    {
+        var response = _attendanceDL.GetReport(employeeId, fromDate, toDate);
+        if(response.Any())
+        {
+            return Ok(response);
+        }
+        return StatusCode(500, "Attendance report data could not be loaded");
+    }
+
     [NonAction]
     public IEnumerable<ApiError> ValidateGetAttendance(string employeeId, DateTime? fromDate, DateTime? toDate)
     {
