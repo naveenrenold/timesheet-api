@@ -69,6 +69,5 @@ Approvals
 2.Format UI
 -----
 3. Need to make only date appear not time in that windows
-4. No leading and popup windows?
-
-5. check how to deploy
+4. Need to made pagination
+5. First check deployment method 

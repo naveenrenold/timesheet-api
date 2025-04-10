@@ -23,7 +23,7 @@ builder.Services.AddControllers().ConfigureApiBehaviorOptions((options) =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp",
-         policy => policy.WithOrigins("http://localhost:5173")
+         policy => policy.WithOrigins(["http://localhost:5173", "https://timesheet-ui-git-naveen-naveenrenolds-projects.vercel.app"])
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
@@ -32,16 +32,15 @@ var app = builder.Build();
 //Configure the HTTP request pipeline.
 app.UseCors("AllowReactApp");  // Apply the CORS policy
                                // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.UseSwaggerUI(
-        options =>
-        {
-            options.SwaggerEndpoint("/openapi/v1.json", "Version One");
-        }
-    );
-}
+
+app.MapOpenApi();
+app.UseSwaggerUI(
+    options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "Version One");
+    }
+);
+
 
 app.UseHttpsRedirection();
 app.MapControllers();
