@@ -23,7 +23,7 @@ builder.Services.AddControllers().ConfigureApiBehaviorOptions((options) =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp",
-         policy => policy.WithOrigins(["http://localhost:5173", "https://timesheet-ui-git-naveen-naveenrenolds-projects.vercel.app"])
+         policy => policy.WithOrigins(["http://localhost:5173", "https://timesheet-ui-git-naveen-naveenrenolds-projects.vercel.app", "https://timesheet-ui-eight.vercel.app"])
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
