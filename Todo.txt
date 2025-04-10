@@ -67,3 +67,8 @@ Approvals
 10/4/25
 1.Test file exception date
 2.Format UI
+-----
+3. Need to make only date appear not time in that windows
+4. No leading and popup windows?
+
+5. check how to deploy

@@ -13,7 +13,7 @@ Insert into WFHException VALUES (@ExceptionDate, GETDATE(),@EmployeeId,@Reportin
         public static readonly string GetException = @"
         Select WFH.ExceptionId, E.EmployeeId, E.Name as EmployeeName, WFH.ExceptionDate, WFH.Reason from WFHException WFH
  inner join Employee E on WFH.EmployeeId = E.EmployeeId
- where ReportingToEmployeeId = @employeeId and ApprovalId = 0 order by ExceptionId        
+ where WFH.ReportingToEmployeeId = @employeeId and WFH.ApprovalId = 0 order by ExceptionId        
         ";
         public static readonly string ApproveException = @"
         Update WFHException set ApprovalId = @approvalStatus where ExceptionId = @exceptionId 
